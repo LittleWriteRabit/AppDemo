@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#27997f</color>-->
+    <!--<color name="colorPrimaryDark">#22856e</color>-->
+    <!--<color name="textColorPrimary">#FFFFFF</color>-->
+    <!--<color name="windowBackground">#FFFFFF</color>-->
+    <!--<color name="navigationBarColor">#000000</color>-->
+    <!--<color name="colorAccent">#bfbfbf</color>-->
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="tab_selected_color">#fff85959</color>
+    <color name="tip_view_bg">#D5E8F6</color>
+    <color name="tip_view_text_color">#4592C6</color>
+
+    <color name="light_transparent">#16000000</color>
+    <color name="dark_transparent">#24000000</color>
+
+    <color name="shimmer_color">#a2878787</color>
+    <color name="colorFontGreyDark">#333333</color>
+    <color name="colorFontGreyLight">#666666</color>
+    <color name="colorLine">#dfdfdf</color>
+    <color name="colorFontGreen">#388e3c</color>
+    <color name="colorFontRed">#F96650</color>
+
+    <color name="shimmer_color_for_image">#55efefef</color>
+
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="progress_dialog_bkg">#dd5b5b5b</color>
+
+    <color name="copy_right_text_color">#5b5b5b</color>
+
+    <color name="load_more_text_color">#dd5b5b5b</color>
+</resources>

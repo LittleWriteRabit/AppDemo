@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--引导页显示的主题-->
+    <style name="AppTheme.SplashOverLay" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="windowNoTitle">?android:windowNoTitle</item>
+        <item name="android:statusBarColor">@color/white</item>
+    </style>
+</resources>
