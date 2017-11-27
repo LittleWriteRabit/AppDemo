@@ -278,6 +278,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
 
         Toast.makeText(mActivity, resId, Toast.LENGTH_SHORT).show();
+        
     }
 
     public ProgressDialogs progressDialog;
