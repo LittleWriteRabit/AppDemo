@@ -31,6 +31,8 @@ public abstract class MvpActivity<P extends BasePresenter> extends BaseActivity 
         if (mvpPresenter != null) {
             mvpPresenter.detachView();
         }
+
+
     }
 
     @Override
