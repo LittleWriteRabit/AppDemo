@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="@dimen/dim180">
 
     <ImageView
         android:id="@+id/ivArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="18dp"
+        android:layout_marginRight="@dimen/dim43"
         android:layout_toLeftOf="@+id/tvRefresh"
         android:background="@mipmap/pull_arrow" />
 
     <ImageView
         android:id="@+id/ivSuccess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dim30"
+        android:layout_height="@dimen/dim30"
         android:layout_centerVertical="true"
-        android:layout_marginRight="18dp"
+        android:layout_marginRight="@dimen/dim10"
         android:layout_toLeftOf="@+id/tvRefresh"
         android:background="@mipmap/refresh_success" />
 
@@ -28,13 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="18dp"
+        android:layout_marginRight="@dimen/dim43"
         android:layout_toLeftOf="@+id/tvRefresh" />
 
 
     <TextView
         android:id="@+id/tvRefresh"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center" />

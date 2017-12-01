@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="text_loading">Loading...</string>
+
+    <!--列表刷新相关-->
+    <string name="pull_to_refresh">SWIPE TO REFRESH</string>
+    <string name="release_refresh">RELEASE TO REFRESH</string>
+    <string name="refreshing">REFRESHING</string>
+    <string name="refresh_success">COMPLETE</string>
+    <string name="refresh_foot_def_loading">Loading...</string>
+    <string name="refresh_foot_def_error">NETWORK ERROR, TRY AGAIN</string>
+    <string name="refresh_foot_def_end">THE END</string>
+
+</resources>

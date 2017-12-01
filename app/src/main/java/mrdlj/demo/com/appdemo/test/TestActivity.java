@@ -1,21 +1,31 @@
 package mrdlj.demo.com.appdemo.test;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import mrdlj.demo.com.appdemo.R;
 import mrdlj.demo.com.appdemo.base.OnItemClickListener;
 import mrdlj.demo.com.appdemo.mvp.main.MainModel;
@@ -24,6 +34,7 @@ import mrdlj.demo.com.appdemo.mvp.main.MainView;
 import mrdlj.demo.com.appdemo.mvp.other.MvpActivity;
 import mrdlj.demo.com.appdemo.ui.activity.SplashActivity;
 import mrdlj.demo.com.appdemo.ui.dialogs.ProgressDialogs;
+import mrdlj.demo.com.appdemo.ui.dialogs.SwipeCloseDialog;
 import mrdlj.demo.com.appdemo.ui.widget.TipView;
 import mrdlj.demo.com.appdemo.ui.widget.banner.Banner;
 import mrdlj.demo.com.appdemo.ui.widget.banner.BannerConfig;
@@ -34,6 +45,7 @@ import mrdlj.demo.com.appdemo.ui.widget.irecyclerview.IRecyclerView;
 import mrdlj.demo.com.appdemo.ui.widget.irecyclerview.OnLoadMoreListener;
 import mrdlj.demo.com.appdemo.ui.widget.irecyclerview.OnRefreshListener;
 import mrdlj.demo.com.appdemo.ui.widget.irecyclerview.footer.LoadMoreFooterView;
+import mrdlj.demo.com.appdemo.ui.widget.pauseimg.PlayIconDrawable;
 import mrdlj.demo.com.appdemo.ui.widget.skeleton.SkeletonScreen;
 import mrdlj.demo.com.appdemo.ui.widget.stateview.StateView;
 import mrdlj.demo.com.appdemo.utils.LogUtil;
@@ -130,12 +142,21 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
 
         iRecyclerView = (IRecyclerView) findViewById(R.id.iRecyclerView);
 //        iRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        iRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+//        iRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        iRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadMoreFooterView = (LoadMoreFooterView) iRecyclerView.getLoadMoreFooterView();
+        loadMoreFooterView.setOnRetryListener(new LoadMoreFooterView.OnRetryListener() {
+            @Override
+            public void onRetry(LoadMoreFooterView view) {
+                //
+                Toast.makeText(getApplicationContext(), "retry", Toast.LENGTH_LONG).show();
+            }
+        });
 
         datas = new ArrayList<>();
         mAdapter = new TestAdapter2(this, datas);
+
         iRecyclerView.setIAdapter(mAdapter);
         TextView textView = new TextView(this);
         textView.setText("add_head");
@@ -143,7 +164,6 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
         iRecyclerView.setOnRefreshListener(this);
         iRecyclerView.setOnLoadMoreListener(this);
         mAdapter.setOnItemClickListener(this);
-
       /*  iRecyclerView.post(new Runnable() {
             @Override
             public void run() {
@@ -153,6 +173,27 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
         initBanner();
         mvpPresenter.loadDataByRetrofitRxjava("111");
 //        setStatusBarColor(0xffff0000);
+        addLitener();
+
+//        MyAdapter myAdapter = new MyAdapter(this, datas, new IItemListener() {
+//            @Override
+//            public int getItemViewType(int position) {
+//                if (position % 2 == 0) {
+//                    return 0;
+//                } else {
+//                    return 1;
+//                }
+//            }
+//
+//            @Override
+//            public BaseHolder2 getViewHolder(int type) {
+//                if (type == 0) {
+//                    return new BaseHolder2(TestActivity.this, R.layout.image_item_test);
+//                } else {
+//                    return new BaseHolder2(TestActivity.this, R.layout.image_item_test2);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -231,7 +272,7 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
     public void onRefresh() {
 //        loadBanner();datas.add("111111111111");
         LogUtil.d("onActivityResult 4");
-        if(mStateView!= null) {
+        if (mStateView != null) {
             mStateView.showLoading();
         }
 
@@ -270,8 +311,9 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
                 banner.setImages(images);
                 //banner设置方法全部调用完毕时最后调用
                 banner.start();
-                if(mStateView!= null) {
-                    mStateView.showRetry();
+                if (mStateView != null) {
+//                    mStateView.showRetry();
+                    mStateView.showContent();
                 }
             }
         }, 3000);
@@ -326,7 +368,7 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
                 datas.add("111111111111===>" + page);
                 mAdapter.notifyDataSetChanged();
                 //还可以加载
-                loadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                loadMoreFooterView.setStatus(LoadMoreFooterView.Status.ERROR);
                 mTipView.show("获取4条新数据");
                 page++;
                 //没有更多数据
@@ -365,15 +407,17 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
 //        banner.setBannerAnimation(t.get(me));
 //        LogUtil.d("banner--->" + t.get(me).getSimpleName());
 
-//        startActivity(new Intent(this, TestActivity.class));
+        startActivity(new Intent(this, TestActivity2.class));
 //        checkRequiredPermission(this, permissionsArray);
 //        DownloadUtil downloadUtil = new DownloadUtil(this, "http://app.mi.com/download/25323");
 //        downloadUtil.setDownloadFileName("apkName" + System.currentTimeMillis() + ".apk");
 //        downloadUtil.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 //        downloadUtil.start();
 
-        showColorPicker();
+//        showColorPicker();
 
+        SwipeCloseDialog dialog = new SwipeCloseDialog(this);
+        dialog.show();
 //        final ProgressDialogs dialogs = new ProgressDialogs(this);
 //        dialogs.setText(R.string.text_loading);
 //        dialogs.show();
@@ -441,6 +485,43 @@ public class TestActivity extends MvpActivity<MainPresenter> implements MainView
         EXPANDED,
         COLLAPSED,
         INTERNEDIATE
+    }
+
+    @BindView(R.id.play_pause)
+    ImageView iv_play;
+    PlayIconDrawable play;
+
+    private void addLitener() {
+        if (iv_play == null) {
+            return;
+        }
+//        final ImageView iconView = (ImageView) findViewById(R.id.play_pause);
+        play = PlayIconDrawable.builder()
+                .withColor(Color.WHITE)
+                .withInterpolator(new FastOutSlowInInterpolator())
+                .withDuration(300)
+                .withInitialState(PlayIconDrawable.IconState.PAUSE)
+                .withAnimatorListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        Log.d("Animation", "animationFinished");
+                    }
+                })
+                .withStateListener(new PlayIconDrawable.StateListener() {
+                    @Override
+                    public void onStateChanged(PlayIconDrawable.IconState state) {
+                        Log.d("IconState", "onStateChanged: " + state);
+                    }
+                })
+                .into(iv_play);
+    }
+
+    @OnClick(R.id.play_pause)
+    public void onPlayClick(View v) {
+        if (play != null) {
+            play.toggle(true);
+        }
     }
 
 }

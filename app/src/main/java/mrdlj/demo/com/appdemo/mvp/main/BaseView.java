@@ -1,16 +1,13 @@
 package mrdlj.demo.com.appdemo.mvp.main;
 
 /**
- * @author du Mvp BaseView
+ * @author: du on 2017/11/27 12:16.
+ * @Email: 2857692313@qq.com
+ * @description: TODO
  */
+
 public interface BaseView {
-    /**
-     * 显示进度
-     */
     void showLoading();
 
-    /**
-     * 隐藏进度
-     */
     void hideLoading();
 }

@@ -15,10 +15,10 @@ import butterknife.Unbinder;
 import mrdlj.demo.com.appdemo.R;
 
 /**
- * @author du 2017-11-23 23:36:01
- * Email:dulijie2162@163.com
- * @description TODO 加载中dialog
+ * Created by du on 2017/9/30 16:17.
+ * 加载中dialog
  */
+
 public class ProgressDialogs extends Dialog {
 
     Unbinder unbinder;
@@ -35,29 +35,25 @@ public class ProgressDialogs extends Dialog {
         unbinder = ButterKnife.bind(this, this);
     }
 
-    /**
-     * 设置进度内容
-     * @param text
-     */
     public void setText(String text) {
-        if (!TextUtils.isEmpty(text) && tvTips != null) {
-            tvTips.setText(text);
-            tvTips.setVisibility(View.VISIBLE);
-        }else{
-            tvTips.setVisibility(View.GONE);
+        if (tvTips != null) {
+            if (!TextUtils.isEmpty(text)) {
+                tvTips.setText(text);
+                tvTips.setVisibility(View.VISIBLE);
+            } else {
+                tvTips.setVisibility(View.GONE);
+            }
         }
     }
 
-    /**
-     * 设置进度内容
-     * @param text
-     */
     public void setText(CharSequence text) {
-        if (!TextUtils.isEmpty(text) && tvTips != null) {
-            tvTips.setText(text);
-            tvTips.setVisibility(View.VISIBLE);
-        }else{
-            tvTips.setVisibility(View.GONE);
+        if (tvTips != null) {
+            if (!TextUtils.isEmpty(text)) {
+                tvTips.setText(text);
+                tvTips.setVisibility(View.VISIBLE);
+            } else {
+                tvTips.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -67,6 +63,7 @@ public class ProgressDialogs extends Dialog {
     public void setText(@StringRes int resId) {
         if (tvTips != null) {
             tvTips.setText(resId);
+            tvTips.setVisibility(View.VISIBLE);
         }
     }
 

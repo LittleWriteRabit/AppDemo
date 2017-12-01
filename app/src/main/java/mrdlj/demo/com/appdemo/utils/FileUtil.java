@@ -1,6 +1,8 @@
 package mrdlj.demo.com.appdemo.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -105,4 +107,13 @@ public class FileUtil {
         return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
 
+    /**
+     * 格式化文件大小
+     * @param context
+     * @param target_size
+     * @return
+     */
+    public static String getFileSizeFormat(Context context, long target_size) {
+        return Formatter.formatFileSize(context, Long.valueOf(target_size));//工具类 根据文件大小自动转化为KB, MB, GB
+    }
 }

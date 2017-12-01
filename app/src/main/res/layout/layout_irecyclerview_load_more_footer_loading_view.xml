@@ -11,15 +11,16 @@
         android:layout_width="@dimen/dim30"
         android:layout_height="@dimen/dim30"
         android:layout_gravity="center" />
+
     <TextView
-        android:layout_marginLeft="@dimen/dim20"
         android:id="@+id/tv_loading"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dim20"
         android:gravity="center"
-        android:text="@string/text_loading"
-        android:textSize="@dimen/txt30"
+        android:text="@string/refresh_foot_def_loading"
         android:textColor="@color/load_more_text_color"
-        android:layout_height="match_parent" />
+        android:textSize="@dimen/txt30" />
 </LinearLayout>
 
     <!--<ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"

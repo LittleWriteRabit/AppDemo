@@ -74,7 +74,7 @@ public class SplashFragment extends BaseFragment<SplashFragPresenter> implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        GlideUtil.setImage(this, mIvSplash, "");
-//        mTvTag.setText(mParam1 + "");
+        mTvTag.setText(mParam1 + "");
         mPresenter.getImages();
 //        mStateView.showLoading();
     }

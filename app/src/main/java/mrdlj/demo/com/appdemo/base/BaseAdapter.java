@@ -58,9 +58,17 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         convert(holder, datas.get(position), position);
     }
 
-//    public abstract void convert(ViewHolder holder, T t);
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+        convert(holder, datas.get(position), position, payloads);
+    }
+
+    //    public abstract void convert(ViewHolder holder, T t);
 
     public abstract void convert(ViewHolder holder, T t, int position);
+
+    public void convert(ViewHolder holder, T t, int position, List<Object> payloads){
+    }
 
     @Override
     public int getItemCount() {
@@ -169,4 +177,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 }

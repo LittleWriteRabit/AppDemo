@@ -8,7 +8,9 @@
     <mrdlj.demo.com.appdemo.ui.widget.banner.Banner
         android:id="@+id/banner_view"
         app:is_auto_play="true"
+        app:indicator_drawable_selected="@color/colorAccent"
+        app:indicator_drawable_unselected="@color/white"
         app:banner_default_image="@drawable/no_banner"
         android:layout_width="match_parent"
-        android:layout_height="120dp"></mrdlj.demo.com.appdemo.ui.widget.banner.Banner>
+        android:layout_height="120dp"/>
 </LinearLayout>

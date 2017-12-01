@@ -3,13 +3,14 @@ package mrdlj.demo.com.appdemo.mvp.other;
 import android.os.Bundle;
 
 import mrdlj.demo.com.appdemo.base.BaseActivity;
-import mrdlj.demo.com.appdemo.mvp.main.BaseView;
 
 
 /**
- * baseActivity
+ * @author: du on 2017/11/27 12:16.
+ * Email: 2857692313@qq.com
+ * description: TODO: baseActivity
  */
-public abstract class MvpActivity<P extends BasePresenter> extends BaseActivity implements BaseView{
+public abstract class MvpActivity<P extends BasePresenter> extends BaseActivity {
     protected P mvpPresenter;
 
     @Override
@@ -18,11 +19,6 @@ public abstract class MvpActivity<P extends BasePresenter> extends BaseActivity 
         super.onCreate(savedInstanceState);
     }
 
-    /**
-     * 用于创建Presenter和判断是否使用MVP模式(由子类实现)
-     * @return
-     */
-    @Override
     protected abstract P createPresenter();
 
     @Override
@@ -31,16 +27,12 @@ public abstract class MvpActivity<P extends BasePresenter> extends BaseActivity 
         if (mvpPresenter != null) {
             mvpPresenter.detachView();
         }
-
-
     }
 
-    @Override
     public void showLoading() {
-        showProgressDialog(null);
+        showProgressDialog();
     }
 
-    @Override
     public void hideLoading() {
         dismissProgressDialog();
     }

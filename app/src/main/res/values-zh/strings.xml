@@ -1,5 +1,25 @@
 <resources>
+    <!--stateView相关-->
     <string name="text_empty">还没有数据呢！</string>
     <string name="text_retry">获取数据失败，点击重试！</string>
     <string name="text_loading">加载中...</string>
+
+    <!--列表刷新相关-->
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="release_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新...</string>
+    <string name="refresh_success">刷新成功</string>
+    <string name="refresh_foot_def_loading">加载中...</string>
+    <string name="refresh_foot_def_error">网络错误，点击重试</string>
+    <string name="refresh_foot_def_end">没有更多数据</string>
+
+    <!--引导页相关-->
+    <string name="copy_right">XXX公司版权所有@2017</string>
+    <string name="count_down">%s 秒&#160;跳过</string>
+    <string name="two_second_exit">再按一次，退出应用！</string>
+
+    <string name="choose_colors">选择主体颜色</string>
+    <string name="ok">确认</string>
+    <string name="cancel">取消</string>
+
 </resources>

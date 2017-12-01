@@ -35,6 +35,7 @@ public class LauncherPresenter extends BasePresenter<ILauncherView> {
                     }
                     handler.sendEmptyMessageDelayed(0, 1000);
                 } else {
+                    handler.removeCallbacksAndMessages(null);
                     mvpView.goMainActivity();
                 }
             }
@@ -55,5 +56,13 @@ public class LauncherPresenter extends BasePresenter<ILauncherView> {
         super.onUnsubscribe();
         handler.removeCallbacksAndMessages(null);
         handler = null;
+    }
+
+    /**
+     * 跳转到MainActivity
+     */
+    public void goMainActivity(){
+        handler.removeCallbacksAndMessages(null);
+        mvpView.goMainActivity();
     }
 }

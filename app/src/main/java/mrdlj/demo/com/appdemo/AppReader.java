@@ -5,6 +5,8 @@ import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 
 import mrdlj.demo.com.appdemo.base.BaseApp;
+import mrdlj.demo.com.appdemo.data.source.db.GreenDaoManager;
+import mrdlj.demo.com.appdemo.utils.CrashHandlerUtil;
 
 /**
  * Created by du on 2017/9/12 15:10.
@@ -25,6 +27,13 @@ public class AppReader extends BaseApp {
         LeakCanary.install(this);
         // Normal app init code...
         sApp = this;
+
+        //初始化greendao
+        GreenDaoManager.getInstance();
+        //崩溃处理
+        CrashHandlerUtil crashHandlerUtil = CrashHandlerUtil.getInstance();
+        crashHandlerUtil.init(this);
+        crashHandlerUtil.setCrashTip("很抱歉，程序出现异常，即将退出！");
     }
 
     /**

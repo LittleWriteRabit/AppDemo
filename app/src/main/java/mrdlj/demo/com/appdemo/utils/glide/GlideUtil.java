@@ -57,7 +57,15 @@ public class GlideUtil {
     }
 
     public static void setImage(final Context context, final ImageView view, final String url) {
-        GlideApp.with(context).load(url).placeholder(R.mipmap.ic_launcher).into(view);
+        if(context instanceof Activity){
+            if(((Activity) context).isFinishing()){
+                return;
+            }else{
+                GlideApp.with(context).load(url).placeholder(R.mipmap.ic_launcher).into(view);
+            }
+        }else if(context!= null) {
+            GlideApp.with(context).load(url).placeholder(R.mipmap.ic_launcher).into(view);
+        }
     }
 
     /**

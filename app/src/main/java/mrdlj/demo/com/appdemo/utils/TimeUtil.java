@@ -282,4 +282,29 @@ public class TimeUtil {
             retStr = "" + i;
         return retStr;
     }
+
+    /**
+     * 判断是否在同一天
+     *
+     * @param dateold
+     * @return
+     */
+    public static boolean getInOneDay(String dateold) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(date);
+        return dateold.equals(dateStr);
+    }
+
+    /**
+     * 返回日期格式
+     *
+     * @return
+     */
+    public static String getDayMouthYear() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(date);
+        return dateStr;
+    }
 }

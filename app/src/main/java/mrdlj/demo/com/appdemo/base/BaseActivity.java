@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -24,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +45,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import butterknife.ButterKnife;
+import mrdlj.demo.com.appdemo.AppReader;
 import mrdlj.demo.com.appdemo.R;
 import mrdlj.demo.com.appdemo.mvp.other.BasePresenter;
 import mrdlj.demo.com.appdemo.retrofit.ApiClient;
@@ -51,31 +57,37 @@ import mrdlj.demo.com.appdemo.ui.widget.stateview.StateView;
 import mrdlj.demo.com.appdemo.utils.IPermissions;
 import mrdlj.demo.com.appdemo.utils.LogUtil;
 import mrdlj.demo.com.appdemo.utils.UIUtils;
+import mrdlj.demo.com.appdemo.utils.news.StatusBarHelper;
 import mrdlj.demo.com.appdemo.utils.statusbar.Eyes;
 import retrofit2.Call;
 import rx.subscriptions.CompositeSubscription;
 
-/**
- * @author du 2017-11-23 23:43:56
- * Email:dulijie2162@163.coms
- * @description TODO 加载中dialog
- */
 
+/**
+ * @author du 2017/11/29 10:23
+ * @Email: 2857692313@qq.com
+ * @deccription:TODO
+ */
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements IPermissions {
-    public Activity mActivity;
-    private CompositeSubscription mCompositeSubscription;
-    private List<Call> calls;
+    /**
+     * 申请权限后的返回码
+     */
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 0x1001;
 
     /**
-     * protected T mPresenter;
+     * 跳转到Setting界面 请求码2 startActivityForResult
      */
+    private static final int REQUEST_SETTING_PERMISSION = 0x1002;
 
+    public Activity mActivity;
+    //    private CompositeSubscription mCompositeSubscription;
+    //    private List<Call> calls;
+    //    protected T mPresenter;
     private static long mPreTime;
+    private static Activity mCurrentActivity;
     /**
      * 对所有activity进行管理
-     */
-
-    private static Activity mCurrentActivity;
+    */
     public static List<Activity> mActivities = new LinkedList<Activity>();
     protected Bundle savedInstanceState;
     protected StateView mStateView;
@@ -100,12 +112,15 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             rootView.bindActivity(this);
         }
 
-        //初始化的时候将其添加到集合中
+        /**
+         *初始化的时候将其添加到集合中
+         */
         synchronized (mActivities) {
             mActivities.add(this);
         }
-//        mPresenter = createPresenter();
-        //子类不再需要设置布局ID，也不再需要使用ButterKnife.bind()
+        /**
+         * 子类不再需要设置布局ID，也不再需要使用ButterKnife.bind()
+         */
         setContentView(provideContentViewId());
         ButterKnife.bind(this);
         initStateView();
@@ -116,16 +131,16 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      * 初始化StateView 加载中等等
      */
     protected void initStateView() {
-//        mStateView = StateView.inject(this);
-//        mStateView.setEmptyResource(R.layout.base_empty);
-//        mStateView.setRetryResource(R.layout.base_retry);
-//        mStateView.setLoadingResource(R.layout.base_loading);
-//        mStateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
-//            @Override
-//            public void onRetryClick() {
-//                onRetryClickListener();
-//            }
-//        });
+        mStateView = StateView.inject(this);
+        mStateView.setEmptyResource(R.layout.base_empty);
+        mStateView.setRetryResource(R.layout.base_retry);
+        mStateView.setLoadingResource(R.layout.base_loading);
+        mStateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
+            @Override
+            public void onRetryClick() {
+                onRetryClickListener();
+            }
+        });
     }
 
     /**
@@ -136,14 +151,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     /**
      * 得到当前界面的布局文件id(由子类实现)
-     *
-     * @return
      */
     protected abstract int provideContentViewId();
 
     /**
      * 用于创建Presenter和判断是否使用MVP模式(由子类实现)
-     * @return
+     *
+     * @return 返回Presenter
      */
     protected abstract T createPresenter();
 
@@ -203,7 +217,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onDestroy() {
         super.onDestroy();
         LogUtil.d("onActivityResult onDestroy");
-        //销毁的时候从集合中移除
+        /**
+         * 销毁的时候从集合中移除
+         */
         synchronized (mActivities) {
             mActivities.remove(this);
         }
@@ -275,55 +291,58 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     public void toastShow(String resId) {
-
-
         Toast.makeText(mActivity, resId, Toast.LENGTH_SHORT).show();
     }
 
     public ProgressDialogs progressDialog;
 
-    /**
-     * 显示进度菊花
-     * @param resId String消息资源
-     * @return
-     */
+    public ProgressDialogs showProgressDialog() {
+        progressDialog = new ProgressDialogs(mActivity);
+        progressDialog.setCancelable(cancelAble());
+        progressDialog.setCanceledOnTouchOutside(cancelAbleOnTouchOutside());
+        progressDialog.setText(R.string.text_loading);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+    public ProgressDialogs showProgressDialog(CharSequence message) {
+        progressDialog = new ProgressDialogs(mActivity);
+        progressDialog.setCancelable(cancelAble());
+        progressDialog.setCanceledOnTouchOutside(cancelAbleOnTouchOutside());
+        progressDialog.setText(message);
+        progressDialog.show();
+        return progressDialog;
+    }
+
     public ProgressDialogs showProgressDialog(@StringRes int resId) {
         progressDialog = new ProgressDialogs(mActivity);
         progressDialog.setCancelable(cancelAble());
-        progressDialog.setCanceledOnTouchOutside(cancelAble());
+        progressDialog.setCanceledOnTouchOutside(cancelAbleOnTouchOutside());
         progressDialog.setText(resId);
         progressDialog.show();
         return progressDialog;
     }
 
     /**
-     * 显示进度
-     * @param message 消息内容
-     * @return
+     * 点击返回可以取消掉ProgressDialog
+     *
+     * @return true 可以 false 不可以
      */
-    public ProgressDialogs showProgressDialog(CharSequence message) {
-        progressDialog = new ProgressDialogs(mActivity);
-        progressDialog.setCancelable(cancelAble());
-        progressDialog.setCanceledOnTouchOutside(cancelAble());
-        progressDialog.setText(message);
-        progressDialog.show();
-        return progressDialog;
+    public boolean cancelAble() {
+        return true;
     }
 
     /**
-     * 是否neng
-     * @return
+     * 点击外部可以取消掉ProgressDialog
+     *
+     * @return true 可以 false 不可以
      */
-    public boolean cancelAble(){
-        return false;
+    public boolean cancelAbleOnTouchOutside() {
+        return true;
     }
 
-    /**
-     * 隐藏进度
-     */
     public void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
-            // progressDialog.hide();会导致android.view.WindowLeaked
             progressDialog.dismiss();
         }
     }
@@ -334,9 +353,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     public void onBackPressed() {
         if (mCurrentActivity instanceof TestActivity) {
-            //如果是主页面
-            // 两次点击间隔大于2秒
-            if (System.currentTimeMillis() - mPreTime > getResources().getInteger(R.integer.exit_time)) {
+            /**
+             * 如果是主页面
+             */
+            if (System.currentTimeMillis() - mPreTime > getResources().getInteger(R.integer.time_second_exit)) {// 两次点击间隔大于2秒
                 UIUtils.showToast(R.string.two_second_exit);
                 mPreTime = System.currentTimeMillis();
                 return;
@@ -396,16 +416,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             mCompositeSubscription.unsubscribe();
     }*/
 
-    /**
-     * 还需申请的权限列表
-     * 申请权限后的返回码
-     */
-    private static final int REQUEST_CODE_ASK_PERMISSIONS = 1;
-
-    /**
-     * 跳转到Setting界面 请求码2
-     */
-    private static final int REQUEST_SETTING_PERMISSION = 2;
 
     private List<String> mPermissions = new ArrayList<>();
     String[] permissions;
@@ -449,9 +459,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         }
     }
 
+    /**
+     * 重写该方法弹出dialog询问
+     * @param activity
+     * @param permissions
+     * @return
+     */
     @Override
     public AlertDialog onShowRationaleDialog(Activity activity, List<String> permissions) {
-        //重写该方法弹出dialog询问
         AlertDialog dialog = null;
         if (activity != null && !activity.isFinishing()) {
             dialog = new AlertDialog.Builder(activity)
@@ -503,8 +518,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS:
                 for (int i = 0; i < permissions.length; i++) {
-                    if (grantResults.length > i && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        //请求成功的权限
+                    if (grantResults.length > i && grantResults[i] == PackageManager.PERMISSION_GRANTED) {//请求成功的权限
                         granted.add(permissions[i]);
                         onRequestPermissionGranted(granted);
                     } else {//请求失败的权限
@@ -518,8 +532,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        onMRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        onMRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -537,8 +551,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         //拒绝且不再询问的存起来搞
         for (int i = 0; i < permissionsList.size(); i++) {
             if (requestFlag && !ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                    permissionsList.get(i))) {
-                //设置为勾选不再显示的时候调用
+                    permissionsList.get(i))) {//设置为勾选不再显示的时候调用
                 deniedCheck.add(permissionsList.get(i));
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
@@ -640,6 +653,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 //            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            window.setStatusBarColor(color);
 //        }
+//    }
+
+//    private void doIt() {
+//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+//        int backgroundColor = sp.getInt(PREF_BACKGROUND_COLOR, -1);
+//        int textColor = sp.getInt(PREF_TEXT_COLOR, -1);
+//        setTheme(R.style.customTheme);
 //    }
 
 }

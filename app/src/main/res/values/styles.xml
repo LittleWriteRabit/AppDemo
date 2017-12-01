@@ -1,5 +1,5 @@
 <resources>
-<!--  在不需要滑动进入的界面使用其他的style launcherActivity MainActivity 这样就可以避免显示透明闪现桌面    -->
+    <!--  在不需要滑动进入的界面使用其他的style launcherActivity MainActivity 这样就可以避免显示透明闪现桌面    -->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -36,22 +36,32 @@
         <item name="windowNoTitle">?android:windowNoTitle</item>
     </style>
 
-   <!-- <style name="test">
-        &lt;!&ndash;状态栏颜色&ndash;&gt;
-        <item name="colorPrimaryDark">@color/md_red_900</item>
-        &lt;!&ndash;控制各个控件被选中时的颜色&ndash;&gt;
-        <item name="colorAccent">@color/md_red_100</item>
-        &lt;!&ndash;页面背景色&ndash;&gt;
-        <item name="android:windowBackground">@color/md_white_1000</item>
-        &lt;!&ndash;api 21 可用 底部导航栏颜色&ndash;&gt;
-        <item name="android:navigationBarColor">@color/md_blue_900</item>
-        &lt;!&ndash;api 21 可用 Appbar背景色&ndash;&gt;
-        <item name="android:colorPrimary">@color/md_green_50</item>
-        &lt;!&ndash;ToolBar上的Title颜色&ndash;&gt;
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        &lt;!&ndash;api 21 可用 各个控制控件的默认颜色&ndash;&gt;
-        <item name="android:colorControlNormal">@color/colorControlNormal</item>
-    </style>-->
+    <!--启动页主题防止黑屏白屏-->
+    <style name="WelcomeContentOverlay" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash_bkg</item>
+    </style>
+
+
+    <!-- <style name="test">
+         &lt;!&ndash;状态栏颜色&ndash;&gt;
+         <item name="colorPrimaryDark">@color/md_red_900</item>
+         &lt;!&ndash;控制各个控件被选中时的颜色&ndash;&gt;
+         <item name="colorAccent">@color/md_red_100</item>
+         &lt;!&ndash;页面背景色&ndash;&gt;
+         <item name="android:windowBackground">@color/md_white_1000</item>
+         &lt;!&ndash;api 21 可用 底部导航栏颜色&ndash;&gt;
+         <item name="android:navigationBarColor">@color/md_blue_900</item>
+         &lt;!&ndash;api 21 可用 Appbar背景色&ndash;&gt;
+         <item name="android:colorPrimary">@color/md_green_50</item>
+         &lt;!&ndash;ToolBar上的Title颜色&ndash;&gt;
+         <item name="android:textColorPrimary">@color/textColorPrimary</item>
+         &lt;!&ndash;api 21 可用 各个控制控件的默认颜色&ndash;&gt;
+         <item name="android:colorControlNormal">@color/colorControlNormal</item>
+     </style>-->
 
 
     <!--NumberProgressBar Style-->
@@ -197,5 +207,20 @@
         <item name="android:background">@null</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="customTheme" parent="@style/AppTheme">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <!--滑动关闭dialog-->
+    <style name="bottomShow" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_show</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide</item>
     </style>
 </resources>

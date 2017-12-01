@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin greendao
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
@@ -31,6 +32,12 @@ android {
                             'src/main/res',
 
                     ]//res 目录的拆分
+        }
+
+        greendao {
+            schemaVersion 1 //对应当前数据库版本
+            daoPackage 'mrdlj.demo.com.appdemo.greendao.gen'
+            targetGenDir 'src/main/java'
         }
     }
 
@@ -87,6 +94,9 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     /*colorPicker*/
     compile(name: 'color_picker_library-release', ext: 'aar')
+    compile files('libs/commons-io-2.6.jar')
+    /*greenDao*/
+    compile 'org.greenrobot:greendao:3.2.2'
 }
 repositories {
     mavenCentral()

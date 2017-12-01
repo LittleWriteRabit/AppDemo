@@ -18,15 +18,11 @@ import mrdlj.demo.com.appdemo.mvp.other.BasePresenter;
 import mrdlj.demo.com.appdemo.ui.widget.stateview.StateView;
 
 /**
- *@author du
  */
 public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     protected T mPresenter;
     private View rootView;
-    /**
-     * 用于显示加载中、网络异常，空布局、内容布局
-     */
-    protected StateView mStateView;
+    protected StateView mStateView;//用于显示加载中、网络异常，空布局、内容布局
     protected Activity mActivity;
 
     @Override

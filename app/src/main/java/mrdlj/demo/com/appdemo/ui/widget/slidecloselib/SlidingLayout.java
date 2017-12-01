@@ -32,9 +32,17 @@ public class SlidingLayout extends FrameLayout {
     private int mLastTouchX;
     private int mLastTouchY;
     private boolean isConsumed = false;
+    private boolean isLockScreen=false;
+
+
 
     public SlidingLayout(Context context) {
         this(context, null);
+    }
+
+    public SlidingLayout(Context context,boolean isLockScreen) {
+        this(context, null);
+        this.isLockScreen=isLockScreen;
     }
 
     public SlidingLayout(Context context, AttributeSet attrs) {
@@ -110,18 +118,27 @@ public class SlidingLayout extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 int deltaX = x - mLastTouchX;
                 int deltaY = y - mLastTouchY;
-
-                if (!isConsumed && mTouchDownX < (getWidth() / 10) && Math.abs(deltaX) > Math.abs(deltaY)) {
-                    isConsumed = true;
-                }
-
-                if (isConsumed) {
+                if (isLockScreen) {
                     int rightMovedX = mLastTouchX - (int) ev.getX();
                     // 左侧即将滑出屏幕
                     if (getScrollX() + rightMovedX >= 0) {
                         scrollTo(0, 0);
                     } else {
                         scrollBy(rightMovedX, 0);
+                    }
+                } else {
+                    if (!isConsumed && mTouchDownX < (getWidth() / 10) && Math.abs(deltaX) > Math.abs(deltaY)) {
+                        isConsumed = true;
+                    }
+
+                    if (isConsumed) {
+                        int rightMovedX = mLastTouchX - (int) ev.getX();
+                        // 左侧即将滑出屏幕
+                        if (getScrollX() + rightMovedX >= 0) {
+                            scrollTo(0, 0);
+                        } else {
+                            scrollBy(rightMovedX, 0);
+                        }
                     }
                 }
                 mLastTouchX = x;

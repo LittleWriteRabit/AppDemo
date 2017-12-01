@@ -1,10 +1,13 @@
 package mrdlj.demo.com.appdemo.ui.widget.irecyclerview.footer;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import mrdlj.demo.com.appdemo.R;
 
@@ -24,6 +27,12 @@ public class LoadMoreFooterView extends FrameLayout {
 
     private OnRetryListener mOnRetryListener;
 
+    private TextView tvLoading;
+
+    private TextView tvError;
+
+    private TextView tvTheEnd;
+
     public LoadMoreFooterView(Context context) {
         this(context, null);
     }
@@ -39,6 +48,11 @@ public class LoadMoreFooterView extends FrameLayout {
         mLoadingView = findViewById(R.id.loadingView);
         mErrorView = findViewById(R.id.errorView);
         mTheEndView = findViewById(R.id.theEndView);
+
+        tvLoading = (TextView) mLoadingView.findViewById(R.id.tv_loading);
+        tvError = (TextView) mErrorView.findViewById(R.id.tvError);
+        tvTheEnd = (TextView) mTheEndView.findViewById(R.id.tvTheEnd);
+
 
         mErrorView.setOnClickListener(new OnClickListener() {
             @Override
@@ -105,4 +119,69 @@ public class LoadMoreFooterView extends FrameLayout {
         void onRetry(LoadMoreFooterView view);
     }
 
+    /**
+     * 设置加载更多Text
+     *
+     * @param text
+     */
+    public void setLoadingText(String text) {
+        if (!TextUtils.isEmpty(text) && tvLoading != null) {
+            tvLoading.setText(text);
+        }
+    }
+
+    /**
+     * 设置加载更多Text
+     *
+     * @param resId string资源id
+     */
+    public void setLoadingText(@StringRes int resId) {
+        if (tvLoading != null) {
+            tvLoading.setText(resId);
+        }
+    }
+
+    /**
+     * 设置出错Text
+     *
+     * @param text
+     */
+    public void setErrorText(String text) {
+        if (!TextUtils.isEmpty(text) && tvError != null) {
+            tvError.setText(text);
+        }
+    }
+
+    /**
+     * 设置出错Text
+     *
+     * @param resId string资源id
+     */
+    public void setErrorText(@StringRes int resId) {
+        if (tvError != null) {
+            tvError.setText(resId);
+        }
+    }
+
+    /**
+     * 设置结束页Text
+     *
+     * @param text
+     */
+    public void setTheEndText(String text) {
+        if (!TextUtils.isEmpty(text) && tvTheEnd != null) {
+            tvTheEnd.setText(text);
+        }
+    }
+
+    /**
+     * * 设置结束页Text
+     *
+     * @param resId string资源id
+     */
+    public void setTheEndText(@StringRes int resId) {
+        if (tvTheEnd != null) {
+            tvTheEnd.setText(resId);
+        }
+    }
 }

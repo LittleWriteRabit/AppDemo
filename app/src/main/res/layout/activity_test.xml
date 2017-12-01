@@ -354,12 +354,14 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-
+    <!--android:background="#f00"-->
+    <!--android:background="@color/white"-->
     <include layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <mrdlj.demo.com.appdemo.ui.widget.irecyclerview.IRecyclerView
             android:id="@+id/iRecyclerView"
@@ -369,7 +371,7 @@
             app:loadMoreEnabled="true"
             app:loadMoreFooterLayout="@layout/layout_irecyclerview_load_more_footer"
             app:refreshEnabled="true"
-            app:refreshHeaderLayout="@layout/layout_classic_header"></mrdlj.demo.com.appdemo.ui.widget.irecyclerview.IRecyclerView>
+            app:refreshHeaderLayout="@layout/layout_classic_header"/>
 
         <mrdlj.demo.com.appdemo.ui.widget.TipView
             android:id="@+id/tip_view"
@@ -379,6 +381,18 @@
             app:tipBackgroundColor="@color/tip_view_bg"
             app:tipText="@string/net_unavailable"
             app:tipTextColor="@color/tip_view_text_color"
-            app:tipTextSize="14sp"></mrdlj.demo.com.appdemo.ui.widget.TipView>
+            app:tipTextSize="14sp"/>
     </FrameLayout>
+
+    <mrdlj.demo.com.appdemo.ui.widget.SwitchButton
+        android:id="@+id/toggle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/play_pause"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp" />
 </LinearLayout>

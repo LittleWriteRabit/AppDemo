@@ -10,12 +10,14 @@ import android.util.Log;
 import android.widget.TextView;
 
 import mrdlj.demo.com.appdemo.R;
+import mrdlj.demo.com.appdemo.base.BaseActivity;
+import mrdlj.demo.com.appdemo.mvp.other.BasePresenter;
 
 /**
  * Created by du on 2017/10/23 10:45.
  */
 
-public class TestActivity2 extends AppCompatActivity {
+public class TestActivity2 extends BaseActivity {
     AppBarLayout app_bar;
     CollapsingToolbarLayout collapsingToolbarLayout;
     private CollapsingToolbarLayoutState state;
@@ -32,7 +34,6 @@ public class TestActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_test2);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         title = (TextView) findViewById(R.id.title);
         setSupportActionBar(toolbar);
@@ -70,6 +71,16 @@ public class TestActivity2 extends AppCompatActivity {
                 Log.d("alpha====",">>"+alpha);
             }
         });
+    }
+
+    @Override
+    protected int provideContentViewId() {
+        return R.layout.layout_test2;
+    }
+
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
 

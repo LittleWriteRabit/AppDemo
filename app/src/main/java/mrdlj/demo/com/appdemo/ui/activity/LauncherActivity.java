@@ -75,6 +75,8 @@ public class LauncherActivity extends MvpActivity<LauncherPresenter> implements 
 
     @OnClick(R.id.tv_seconds)
     public void goSkip(){
-        goMainActivity();
+        if(mvpPresenter!= null){
+            mvpPresenter.goMainActivity();
+        }
     }
 }
